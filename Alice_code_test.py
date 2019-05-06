@@ -4,8 +4,7 @@ import json
 
 app = Flask(__name__)
 
-logging.basicConfig(level=logging.INFO, filename='/home/margis902/mysite/app.log',  # записываю логи
-                    format='%(asctime)s %(levelname)s %(name)s %(message)s')
+logging.basicConfig(level=logging.INFO, filename='/home/margis902/mysite/app.log')
 
 with open("/home/margis902/mysite/lessons.json", "r", ) as read_file:
     info_i = json.load(read_file)
@@ -15,7 +14,7 @@ sessionStorage = {}
 HI = 'Привет начинающий программист. Этот навык даст тебе приблизительное представление о замечательном языке программирования - Python'
 
 
-def get_text(num):
+def text(num):  # берём текст и смотрим чтобы всё было нормально
     print(info_i)
     if num >= 0 and num <= 9:
         return info_i['lessons'][str(num)]
@@ -48,49 +47,40 @@ def handle_dialog(req, res):
         sessionStorage[user_id] = {
             'number': -1,
             'start': False}
-
-    if not sessionStorage[user_id]['start'] and req['request']['original_utterance'].lower() in ['да', 'давай']:
+        res['response']['text'] = HI
+        res['response']['buttons'] = buttons('start')
+        return
+    if not sessionStorage[user_id]['start'] and req['request']['original_utterance'].lower() in ['да']:  # команда для старта
         res['response']['text'] = 'Скажите: начать обучение'
         res['response']['buttons'] = buttons('first')
         sessionStorage[user_id]['start'] = True
 
-    elif not sessionStorage[user_id]['start'] and req['request']['original_utterance'].lower() in ['нет']:
+    elif not sessionStorage[user_id]['start'] and req['request']['original_utterance'].lower() in ['нет']:  # на случай отказа юзверя
         res['response']['text'] = 'оставайся в неведение'
         res['response']['end_session'] = False
         return
-    elif 'начать обучение' in req['request']['original_utterance'].lower() and sessionStorage[user_id]['start']:
-        res['response']['text'] = get_text(sessionStorage[user_id]['number'])
+
+    elif 'начать обучение' in req['request']['original_utterance'].lower() and sessionStorage[user_id]['start']:  # происходит сразу после команды начинания
+        res['response']['text'] = text(sessionStorage[user_id]['number'])
         sessionStorage[user_id]['number'] += 1
         res['response']['buttons'] = buttons()
         print(res['response']['text'])
 
-        res['response']['text'] = HI
-        res['response']['buttons'] = buttons('start')
-        return
-
-
-
-
+    elif req['request']['original_utterance'].lower() == 'СЛЕДУЮЩИЙ!' and sessionStorage[user_id]['number'] >= 0:  # перелистывание
+        res['response']['text'] = text(sessionStorage[user_id]['number'])
+        sessionStorage[user_id]['number'] += 1
+        res['response']['buttons'] = buttons()
+        print(res['response']['text'])
 
 
 def buttons(key='standart'):
     if key == 'standart':
-        but = [{'title': 'СЛЕДУЮЩИЙ!', 'hide': False},
-               {'title': '1 урок', 'hide': False},
-               {'title': '2 урок', 'hide': False},
-               {'title': '3 урок', 'hide': False},
-               {'title': '4 урок', 'hide': False},
-               {'title': '5 урок', 'hide': False},
-               {'title': '6 урок', 'hide': False},
-               {'title': '7 урок', 'hide': False},
-               {'title': '8 урок', 'hide': False},
-               {'title': '9 урок', 'hide': False},
-               ]
+        but = {'title': 'СЛЕДУЮЩИЙ!', 'hide': False}
     elif key == 'start':
         but = [{'title': 'Да', 'hide': True},
                {'title': 'Нет', 'hide': True}]
     elif key == 'first':
-        but = {'title': 'начать тестирование', 'hide': True}
+        but = {'title': 'начать обучение', 'hide': True}
 
     return but
 
