@@ -69,6 +69,10 @@ def handle_dialog(req, res):
         return
 
 
+
+
+
+
 def buttons(key='standart'):
     if key == 'standart':
         but = [{'title': 'СЛЕДУЮЩИЙ!', 'hide': False},
