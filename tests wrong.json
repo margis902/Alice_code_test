@@ -1,0 +1,72 @@
+{
+  "tests" : [
+      {
+        "1" : "s = 0 \nfor i in range(3,9): \n\ts = s + 9 \nprint(s)",
+        "ans" : 54
+      },
+      {
+        "2" : "s = 0 \nfor i in range(3,9): \n\ts = s + 6 \nprint(s)",
+        "ans" : 36
+      },
+      {
+        "3" : "s = 0 \nfor i in range(2,5): \n\ts = s + 10 \nprint(s)",
+        "ans" : 30
+      },
+      {
+        "4": "s = 100 \nfor i in range(98,100): \n\ts = s - 10 \nprint(s)",
+        "ans" : 80
+      },
+      {
+        "5": "s = 0 \nfor i in range(0,10): \n\ts = s + 10 \nprint(s)",
+        "ans": 100
+      },
+      {
+        "6" : "s = 0 \nfor i in range(0,10): \n\ts = s + 1 \nprint(s)",
+        "ans" : 10
+      },
+      { "7" : "s = 1 \nfor i in range(5,10): \n\ts = s * 2 \nprint(s)",
+        "ans" : 32
+      },
+      {
+        "8" : "s = 1 \nfor i in range(8,10): \n\ts = s ** 2 \nprint(s)",
+        "ans" : 1
+      }
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
